@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 
 public class Server {
@@ -18,8 +21,24 @@ public class Server {
 
         // load dictionary
         DictionaryService dictionaryService = new DictionaryService(dictionaryFilePath);
-        DictionaryController dictionaryController = new DictionaryController();
-        dictionaryController.setService(dictionaryService);
+        DictionaryController dictionaryController = new DictionaryController(dictionaryService);
+
+
+        try (
+            ServerSocket serverSocket = new ServerSocket(listeningPort)){
+            System.out.println(STR."Dictionary Server is listening on port \{listeningPort}");
+
+            while (true) {
+                Socket socket = serverSocket.accept();
+                new Thread(new ClientHandler(socket, dictionaryController));
+            }
+
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 

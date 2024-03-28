@@ -8,12 +8,15 @@ public class DictionaryController {
         DELETE,
     }
 
-    public void setService(DictionaryService service) {
+    public DictionaryController(DictionaryService service){
         this.service = service;
     }
 
-    public void requestHandler(RequestType requestType, String word, String definition){
-        switch (requestType){
+    public void requestHandler(ClientHandler.ClientRequestDAO requestDAO){
+        String word = requestDAO.word;
+        String definition = requestDAO.definition;
+
+        switch (requestDAO.requestType){
             case SEARCH -> service.getDefinition(word);
             case ADD -> service.addWord(word, definition);
             case DELETE -> service.removeWord(word);
