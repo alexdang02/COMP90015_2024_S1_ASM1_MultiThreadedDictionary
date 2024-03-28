@@ -1,9 +1,5 @@
 import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
 
-import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Server {
 
@@ -15,10 +11,15 @@ public class Server {
         }
 
         int listeningPort = Integer.parseInt(args[0]);
-        String dictionaryFile = args[1];
+        String dictionaryFilePath = args[1];
 
         System.out.println(listeningPort);
-        System.out.println(dictionaryFile);
+        System.out.println(dictionaryFilePath);
+
+        // load dictionary
+        DictionaryService dictionaryService = new DictionaryService(dictionaryFilePath);
+        DictionaryController dictionaryController = new DictionaryController();
+        dictionaryController.setService(dictionaryService);
 
     }
 

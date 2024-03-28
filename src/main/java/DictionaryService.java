@@ -10,6 +10,7 @@ public class DictionaryService {
 
     public DictionaryService (String dictionary_filepath) {
         this.dictionary =loadDictionaryIntoMap(dictionary_filepath);
+        System.out.println("[DICTIONARY] Load dictionary successfully");
     }
 
     public void getDefinition(String word){
