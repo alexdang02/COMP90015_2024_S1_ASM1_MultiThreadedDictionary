@@ -13,20 +13,20 @@ public class DictionaryService {
         System.out.println("[DICTIONARY] Load dictionary successfully");
     }
 
-    public void getDefinition(String word){
-        dictionary.get(word);
+    public String getDefinition(String word){
+        return dictionary.get(word);
     }
 
-    public void addWord(String word, String definition){
-        dictionary.put(word, definition);
+    public String addWord(String word, String definition){
+        return dictionary.putIfAbsent(word, definition);
     }
 
-    public void updateWord(String word, String replacedDefinition){
-         dictionary.put(word, replacedDefinition);
+    public String updateWord(String word, String replacedDefinition){
+         return dictionary.replace(word, replacedDefinition);
     }
 
-    public void removeWord(String word){
-        dictionary.remove(word);
+    public String removeWord(String word){
+        return dictionary.remove(word);
     }
 
     private static ConcurrentHashMap<String, String> loadDictionaryIntoMap(String dictionaryFilePath) {

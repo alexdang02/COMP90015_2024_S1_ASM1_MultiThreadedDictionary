@@ -1,26 +1,33 @@
 public class DictionaryController {
-    private DictionaryService service;
+    private final DictionaryService service;
 
-    public enum RequestType {
-        SEARCH,
-        ADD,
-        UPDATE,
-        DELETE,
-    }
-
-    public DictionaryController(DictionaryService service){
+    public DictionaryController(DictionaryService service) {
         this.service = service;
     }
 
-    public void requestHandler(ClientHandler.ClientRequestDAO requestDAO){
-        String word = requestDAO.word;
-        String definition = requestDAO.definition;
+    public ClientReply requestHandler(ClientRequest request) {
+        String word = request.word;
+        String definition = request.definition;
+        String replyData;
 
-        switch (requestDAO.requestType){
-            case SEARCH -> service.getDefinition(word);
-            case ADD -> service.addWord(word, definition);
-            case DELETE -> service.removeWord(word);
-            case UPDATE -> service.updateWord(word, definition);
-        }
+        return switch (request.getRequestType()) {
+            case SEARCH:
+                replyData = service.getDefinition(word);
+                yield new ClientReply(definition != null ? ReplyCode.FOUND : ReplyCode.NOT_FOUND, replyData);
+
+            case ADD:
+                replyData = service.addWord(word, definition);
+                yield new ClientReply(replyData == null ? ReplyCode.CREATED : ReplyCode.CONFLICT, replyData);
+
+            case DELETE:
+                replyData = service.removeWord(word);
+                yield new ClientReply(replyData != null ? ReplyCode.OK : ReplyCode.NOT_FOUND, replyData);
+
+            case UPDATE:
+                replyData = service.updateWord(word, definition);
+                yield new ClientReply(replyData != null ? ReplyCode.OK : ReplyCode.NOT_FOUND, replyData);
+        };
+
+
     }
 }
