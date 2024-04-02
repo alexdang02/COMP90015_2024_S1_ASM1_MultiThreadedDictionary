@@ -1,3 +1,16 @@
+package DictionaryServer;
+
+/**
+ * DictionaryController.java
+ * <p>
+ * Author: Chi Trung Dang (Student ID: 109862)
+ * <p>
+ * COMP90015 - Sem 1 - 2024
+ * <p>
+ * Description: Serve as middleware between client request and dictionary operation
+ *              Abstracting away dictionary operation.
+ */
+
 public class DictionaryController {
     private final DictionaryService service;
 
@@ -13,7 +26,7 @@ public class DictionaryController {
         return switch (request.getRequestType()) {
             case SEARCH:
                 replyData = service.getDefinition(word);
-                yield new ClientReply(definition != null ? ReplyCode.FOUND : ReplyCode.NOT_FOUND, replyData);
+                yield new ClientReply(replyData != null ? ReplyCode.FOUND : ReplyCode.NOT_FOUND, replyData);
 
             case ADD:
                 replyData = service.addWord(word, definition);

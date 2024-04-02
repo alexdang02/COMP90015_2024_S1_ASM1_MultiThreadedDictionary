@@ -1,8 +1,21 @@
-import java.io.File;
-import java.io.IOException;
+package DictionaryServer;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
+/**
+ * Server.java
+ * <p>
+ * Author: Chi Trung Dang (Student ID: 109862)
+ * <p>
+ * COMP90015 - Sem 1 - 2024
+ * <p>
+ * Description: Server Application.
+ *              Initialising TCP communication for server-side
+ *              Validating commandline arguments.
+ */
 
 public class Server {
 
@@ -16,30 +29,45 @@ public class Server {
         int listeningPort = Integer.parseInt(args[0]);
         String dictionaryFilePath = args[1];
 
-        System.out.println(listeningPort);
-        System.out.println(dictionaryFilePath);
-
         // load dictionary
         DictionaryService dictionaryService = new DictionaryService(dictionaryFilePath);
         DictionaryController dictionaryController = new DictionaryController(dictionaryService);
 
+        // setting up server
+        ServerSocket serverSocket = null;
 
-        try (
-            ServerSocket serverSocket = new ServerSocket(listeningPort)){
+        try {
+            serverSocket = new ServerSocket(listeningPort);
             System.out.println(STR."Dictionary Server is listening on port \{listeningPort}");
+            int i = 0;
 
             while (true) {
-                Socket socket = serverSocket.accept();
-                new Thread(new ClientHandler(socket, dictionaryController));
+
+                //Accept an incoming client connection request
+                Socket clientSocket = serverSocket.accept();
+                i++;
+                System.out.println(STR."Client conection number \{i} accepted:");
+                System.out.println(STR."Remote Hostname: \{clientSocket.getInetAddress().getHostName()}");
+                System.out.println(STR."Local Port: \{clientSocket.getLocalPort()}");
+
+                Thread t = new Thread(() -> new ClientHandler(clientSocket, dictionaryController).run());
+                t.start();
             }
-
-
-
+        } catch (SocketException ex) {
+                ex.printStackTrace();
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
+                System.out.println("here");
+                e.printStackTrace();
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    // close the server socket
+                    serverSocket.close();}
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
     }
 
     private static boolean validateArgs(String[] args) {

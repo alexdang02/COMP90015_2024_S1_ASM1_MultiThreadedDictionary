@@ -1,3 +1,14 @@
+package DictionaryServer;
+/**
+ * ClientReply.java
+ * <p>
+ * Author: Chi Trung Dang (Student ID: 109862)
+ * <p>
+ * COMP90015 - Sem 1 - 2024
+ * <p>
+ * Description: Serve as convenient data type for ClientReply.
+ */
+
 enum ReplyCode {
     OK(200),
     CREATED(201),
@@ -25,4 +36,8 @@ public class ClientReply {
         this.replyData = replyData;
     }
 
+    @Override
+    public String toString() {
+        return STR."REPLY: \{replyCode.getStatusCode()}-\{replyData}";
+    }
 }

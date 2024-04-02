@@ -1,3 +1,5 @@
+package DictionaryServer;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -5,12 +7,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * DictionaryService.java
+ * <p>
+ * Author: Chi Trung Dang (Student ID: 109862)
+ * <p>
+ * COMP90015 - Sem 1 - 2024
+ * <p>
+ * Description: Handle any dictionary-related operation
+ *             Including initialising sample dictionary as ConcurrentHashMap for application.
+ *             Abstracting away low-level ConcurrentHashMap operation.
+ */
+
 public class DictionaryService {
     private final ConcurrentHashMap<String,String> dictionary;
 
     public DictionaryService (String dictionary_filepath) {
-        this.dictionary =loadDictionaryIntoMap(dictionary_filepath);
-        System.out.println("[DICTIONARY] Load dictionary successfully");
+        this.dictionary = loadDictionaryIntoMap(dictionary_filepath);
+        System.out.println(STR."DICTIONARY at \{dictionary_filepath} is loaded successfully");
     }
 
     public String getDefinition(String word){

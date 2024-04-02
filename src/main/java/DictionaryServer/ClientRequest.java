@@ -1,3 +1,15 @@
+package DictionaryServer;
+
+/**
+ * ClientRequest.java
+ * <p>
+ * Author: Chi Trung Dang (Student ID: 109862)
+ * <p>
+ * COMP90015 - Sem 1 - 2024
+ * <p>
+ * Description: Serve as convenient data type for ClientRequest postprocessing.
+ */
+
 enum RequestType {
     SEARCH,
     ADD,
