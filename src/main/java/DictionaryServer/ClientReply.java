@@ -38,6 +38,6 @@ public class ClientReply {
 
     @Override
     public String toString() {
-        return STR."REPLY: \{replyCode.getStatusCode()}-\{replyData}";
+        return STR."REPLY:\{replyCode.getStatusCode()}:\{replyData}\n";
     }
 }

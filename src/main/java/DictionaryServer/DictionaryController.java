@@ -39,6 +39,10 @@ public class DictionaryController {
             case UPDATE:
                 replyData = service.updateWord(word, definition);
                 yield new ClientReply(replyData != null ? ReplyCode.OK : ReplyCode.NOT_FOUND, replyData);
+            case ERROR:
+                // NOTE: In case of Bad Request, word component in ClientRequest will be used as explanation returned to users
+                // Since error message is stored in word, pass it on to user
+                yield new ClientReply(ReplyCode.BAD_REQUEST, word);
         };
 
 

@@ -15,6 +15,7 @@ enum RequestType {
     ADD,
     UPDATE,
     DELETE,
+    ERROR,
 }
 public class ClientRequest {
 
