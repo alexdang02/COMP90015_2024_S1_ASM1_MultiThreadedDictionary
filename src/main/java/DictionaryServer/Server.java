@@ -3,7 +3,6 @@ package DictionaryServer;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 /**
  * Server.java
@@ -53,18 +52,17 @@ public class Server {
                 Thread t = new Thread(() -> new ClientHandler(clientSocket, dictionaryController).run());
                 t.start();
             }
-        } catch (SocketException ex) {
-                ex.printStackTrace();
         } catch (IOException e) {
-                System.out.println("here");
-                e.printStackTrace();
+                System.out.println("An I/O error occurs when opening the socket or accepting client connection");
+                System.exit(1);
         } finally {
             if (serverSocket != null) {
                 try {
                     // close the server socket
                     serverSocket.close();}
                     catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("Error occurs when closing the socket");
+                        System.exit(1);
                     }
                 }
             }

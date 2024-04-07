@@ -27,17 +27,19 @@ enum ReplyCode {
     }
 }
 
-public class ClientReply {
+public class ServerReply {
     private final ReplyCode replyCode;
+    private final RequestType requestType;
     private final String replyData;
 
-    public ClientReply(ReplyCode replyCode, String replyData){
+    public ServerReply(RequestType requestType, ReplyCode replyCode, String replyData){
+        this.requestType = requestType;
         this.replyCode = replyCode;
         this.replyData = replyData;
     }
 
     @Override
     public String toString() {
-        return STR."REPLY:\{replyCode.getStatusCode()}:\{replyData}\n";
+        return STR."\{requestType.toString()}:\{replyCode.getStatusCode()}:\{replyData}\n";
     }
 }

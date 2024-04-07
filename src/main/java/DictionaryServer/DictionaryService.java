@@ -32,7 +32,13 @@ public class DictionaryService {
     }
 
     public String addWord(String word, String definition){
-        return dictionary.putIfAbsent(word, definition);
+        String result = dictionary.get(word);
+        if (result != null){
+            return result;
+        } else {
+            dictionary.put(word, definition);
+            return null;
+        }
     }
 
     public String updateWord(String word, String replacedDefinition){
