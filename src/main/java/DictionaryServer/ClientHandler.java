@@ -31,23 +31,18 @@ public class ClientHandler implements Runnable{
             String clientMsg;
 
             while ((clientMsg = in.readLine()) != null) {
-                System.out.println(STR."Message from client: \{clientMsg}");
-                out.flush();
 
                 ClientRequest request =  parseClientMessage(clientMsg);
-                ClientReply reply =  controller.requestHandler(request);
+                System.out.println(STR."REQUEST: \{clientMsg}");
+                ServerReply reply =  controller.requestHandler(request);
                 String replyString = reply.toString();
-                System.out.println(STR."Output: \{replyString}");
+                System.out.println(STR."REPLY: \{replyString}");
                 out.write(replyString);
                 out.flush();
-//                clientSocket.close();
 
             }
-            System.out.println("Server closed the client connection!!!!! - received null");
-
-
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client disconnect.");
         }
     }
 
