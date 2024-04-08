@@ -14,7 +14,7 @@ import java.net.Socket;
  *              receive ClientReply from DictionaryService before sending back to client.
  */
 
-public class ClientHandler implements Runnable{
+public class ClientHandler{
     private final Socket clientSocket;
     private final DictionaryController controller;
 
@@ -23,8 +23,7 @@ public class ClientHandler implements Runnable{
         this.controller = controller;
     }
 
-    @Override
-    public void run() {
+    public void handleClient() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -34,6 +33,10 @@ public class ClientHandler implements Runnable{
 
                 ClientRequest request =  parseClientMessage(clientMsg);
                 System.out.println(STR."REQUEST: \{clientMsg}");
+
+                // Save last active time to ThreadWorker
+                ((WorkerThread) Thread.currentThread()).setLastActiveTime(System.currentTimeMillis());
+
                 ServerReply reply =  controller.requestHandler(request);
                 String replyString = reply.toString();
                 System.out.println(STR."REPLY: \{replyString}");
