@@ -23,11 +23,10 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("LISTENING on separate thread");
         try {
             String serverReply;
             while ((serverReply = in.readLine()) != null) {
-                System.out.println(STR."PREPROCESSED: \{serverReply}");
+                System.out.println(STR."REPLY: \{serverReply}\n");
                 listener.onClientResponseReceived(new ServerReply(serverReply));
             }
         } catch (IOException e) {

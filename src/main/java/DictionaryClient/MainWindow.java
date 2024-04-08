@@ -17,14 +17,12 @@ public class MainWindow implements ClientResponseListener {
         initializeGUI();
     }
 
-
-
     public void onClientResponseReceived(ServerReply serverReply) {
         if (serverReply.replyCode == 500){
-            JOptionPane.showMessageDialog(null, serverReply.warning, "SERVER INTERNAL ERROR", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, serverReply.warning, "SERVER INTERNAL ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (serverReply.replyCode == 400) {
-            JOptionPane.showMessageDialog(null, serverReply.warning, "BAD REQUEST", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, serverReply.warning, "BAD REQUEST", JOptionPane.INFORMATION_MESSAGE);
         }
 
         if (serverReply.requestType == RequestType.SEARCH) {
@@ -72,23 +70,23 @@ public class MainWindow implements ClientResponseListener {
         }
         else if (serverReply.requestType == RequestType.UPDATE) {
             if (serverReply.replyCode == 200) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             } else if (serverReply.replyCode == 302) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "UNSUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "UNSUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else if (serverReply.requestType == RequestType.ADD) {
             if (serverReply.replyCode == 201) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             } else if (serverReply.replyCode == 409) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "UNSUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "UNSUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else if (serverReply.requestType == RequestType.DELETE) {
             if (serverReply.replyCode == 200) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             } else if (serverReply.replyCode == 404) {
-                JOptionPane.showMessageDialog(null, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, serverReply.warning, "SUCCESSFUL", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -96,7 +94,7 @@ public class MainWindow implements ClientResponseListener {
     private JButton getExtendButton(JTextField textBox, String replyData) {
         JButton extendButton = new JButton("Extend");
         extendButton.addActionListener(_ -> {
-            openNewFrame(replyData);
+            new UpdateWindow(lastSearch, replyData, frame.getSize(), client);
             textField.setText("");
             frame.getContentPane().remove(textBox);
             frame.getContentPane().remove(extendButton);
@@ -104,10 +102,6 @@ public class MainWindow implements ClientResponseListener {
             frame.getContentPane().repaint();
         });
         return extendButton;
-    }
-
-    private void openNewFrame(String replyData) {
-        new UpdateWindow(lastSearch, replyData, frame.getSize(), client);
     }
 
     @Override
@@ -148,8 +142,8 @@ public class MainWindow implements ClientResponseListener {
 
         GridBagConstraints gbc_addBtn = new GridBagConstraints();
         gbc_addBtn.insets = new Insets(0, 0, 5, 0);
-        gbc_addBtn.gridx = 2; // Adjust the gridx for the Add button
-        gbc_addBtn.gridy = 0; // Keep the same gridy for the Add button
+        gbc_addBtn.gridx = 2;
+        gbc_addBtn.gridy = 0;
         frame.getContentPane().add(addBtn, gbc_addBtn);
 
         JTextArea textArea = new JTextArea();
@@ -175,9 +169,7 @@ public class MainWindow implements ClientResponseListener {
             frame.getContentPane().repaint();
             new AddWindow(frame, client, lastSearch);
 
-
         });
-
 
     }
 }

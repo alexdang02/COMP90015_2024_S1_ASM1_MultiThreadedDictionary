@@ -45,10 +45,15 @@ public class UpdateWindow {
         // Add action listener to the update button
         updateButton.addActionListener(_ -> {
             String updatedString = textArea.getText();
-            ClientRequest request = new ClientRequest(RequestType.UPDATE, word, updatedString);
-            // Send the updated string to the server
-            client.sendData(request);
-            blankFrame.dispose();
+            // Check if updated string is null or empty
+            if (updatedString == null || updatedString.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(blankFrame, "Please enter a valid string to update.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            } else {
+                ClientRequest request = new ClientRequest(RequestType.UPDATE, word, updatedString);
+                // Send the updated string to the server
+                client.sendData(request);
+                blankFrame.dispose();
+            }
         });
 
         // Create a button for edit

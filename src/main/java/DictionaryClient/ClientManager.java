@@ -1,6 +1,7 @@
 package DictionaryClient;
 
 import java.io.IOException;
+import java.security.spec.ECField;
 
 public class ClientManager {
 
@@ -19,8 +20,11 @@ public class ClientManager {
             Client client = createAndStartClient(serverAddress, serverPort);
             mainWindow = new MainWindow(client);
             mainWindow.frame.setVisible(true);
+        } catch (IOException e) {
+            System.out.println("ERROR Connecting to server.");
+            System.exit(1);
         } catch (Exception e) {
-            System.out.println("ERROR initialising GUI");
+            System.out.println("ERROR Initialising GUI");
         }
     }
 
